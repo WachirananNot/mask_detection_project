@@ -6,7 +6,7 @@ import tensorflow as tf
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # Load the pre-trained mask detection model
-model = tf.keras.models.load_model('model.h5')
+model = tf.keras.models.load_model('mask_detection_model.h5')
 
 # Initialize the video capture
 cap = cv2.VideoCapture(0)
@@ -29,14 +29,14 @@ while True:
         face = face / 255.0
         # Make a prediction with the mask detection model
         prediction = model.predict(face)
-        
+
         # Determine if the person is wearing a mask or not
-        if prediction[0][0] > prediction[0][1]:
-            label = 'mask'
-            color = (0, 255, 0)
-        else:
+        if prediction[0][0] > 0.5:
             label = 'no mask'
             color = (0, 0, 255)
+        else:
+            label = 'mask'
+            color = (0, 255, 0)
         
         # Draw a rectangle around the face and label it
         cv2.rectangle(frame, (x, y), (x+w, y+h), color, 2)

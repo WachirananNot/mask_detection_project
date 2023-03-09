@@ -35,4 +35,5 @@ while True:
         cv2.imwrite(image_file,image_org[y:y+h,x:x+w])
         count += 1
     cv2.imshow("Faces found", image_bgr)
-    cv2.waitKey(1)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
